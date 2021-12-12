@@ -17,9 +17,13 @@ public class RandomBalls extends JFrame {
     final Color[] COLORS = {Color.red, Color.green, Color.blue};
     Random random; // поле класса RandomBalls
     ArrayList<Ball> balls;
+    int showDelay = 1000;
+    int counter = 0;
+    Canvas canvas;
 
     public static void main(String[] args) {
-        new RandomBalls();
+//        new RandomBalls();
+        new RandomBalls().game();
     }
 
     public RandomBalls() {
@@ -31,7 +35,7 @@ public class RandomBalls extends JFrame {
         setTitle(TITLE_OF_PROGRAM);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-        Canvas canvas = new Canvas();
+        canvas = new Canvas();
         canvas.setBackground(Color.white);
         canvas.setPreferredSize(
                 new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT));
@@ -66,6 +70,26 @@ public class RandomBalls extends JFrame {
             if (d < balls.get(i).d/2) {
                 balls.remove(i);
                 break;
+            }
+        }
+    }
+
+    void game() {
+        while (true) {
+            addBall();
+            if (balls.size() >= 5) {
+                System.out.println("Game Over: " + counter);
+                break;
+            }
+            canvas.repaint();
+            counter++;
+            if (counter % 10 == 0 && showDelay > 100) {
+                showDelay -= 100;
+            }
+            try {
+                Thread.sleep(showDelay);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
     }
